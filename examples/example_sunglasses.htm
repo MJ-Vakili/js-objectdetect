@@ -77,6 +77,27 @@
 				glasses.src = e.src;
 			}, false);
 		});
+		navigator.mediaDevices.getUserMedia({ video: true })
+				.then(gotMedia)
+				.catch(error => console.error('getUserMedia() error:', error));
+
+			function gotMedia(mediaStream) {
+				const mediaStreamTrack = mediaStream.getVideoTracks()[0];
+				const imageCapture = new ImageCapture(mediaStreamTrack);
+				console.log(imageCapture);
+
+
+				const capabilities = mediaStreamTrack.getCapabilities();
+				const settings = mediaStreamTrack.getSettings();
+				console.log(capabilities);
+				alert(JSON.stringify(capabilities));
+				if (capabilities.zoom) {
+					zoomSlider.min = capabilities.zoom.min;
+					zoomSlider.max = capabilities.zoom.max;
+					zoomSlider.step = capabilities.zoom.step;
+					zoomSlider.value = settings.zoom;
+				}
+			}
 	};
 	
     </script>
